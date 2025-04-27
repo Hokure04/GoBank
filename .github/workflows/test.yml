@@ -1,0 +1,66 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  lint:
+    name: Lint Go Code
+    runs-on: ubuntu-latest
+    container: golangci/golangci-lint:v1.63.4-alpine
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install make and protolint
+        run: |
+          apk add make
+          go install github.com/yoheimuta/protolint/cmd/protolint@v0.53.0
+
+      - name: Run Linter
+        run: make lint
+
+  build:
+    name: Build Docker Images
+    runs-on: ubuntu-latest
+    container:
+      image: gcr.io/kaniko-project/executor:v1.22.0-debug
+      options: --entrypoint ""
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Build docker images without push
+        run: |
+          dockerfiles=$(find . -iname '*Dockerfile*')
+          for dockerfile in $dockerfiles; do
+            build_context=$(dirname "$dockerfile")
+            /kaniko/executor --context "$build_context" \
+                             --dockerfile "$dockerfile" \
+                             --no-push \
+                             --registry-mirror index.docker.io
+          done
+
+  test:
+    name: Run Tests
+    runs-on: ubuntu-latest
+    services:
+      docker:
+        image: docker:27.1.1-dind-alpine3.20
+        options: >-
+          --privileged
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Docker
+        run: |
+          apk add make
+          docker version
+          docker-compose version
+
+      - name: Run Tests
+        run: make test
