@@ -23,7 +23,7 @@ jobs:
           go install github.com/yoheimuta/protolint/cmd/protolint@v0.53.0
 
       - name: Run Linter
-        run: make lint
+        run: make tools && make lint
 
   build:
     name: Build Docker Images
