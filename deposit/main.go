@@ -35,8 +35,8 @@ func transferMoney(writer http.ResponseWriter, request *http.Request) {
 func main() {
 	router := mux.NewRouter()
 
-	router.HandleFunc("/transactions", getTransactions).Methods("GET")
-	router.HandleFunc("/transfer", transferMoney).Methods("POST")
+	router.HandleFunc("GET /transactions", getTransactions)
+	router.HandleFunc("POST /transfer", transferMoney)
 
 	fmt.Println("Listening on port 8081")
 	err := http.ListenAndServe(":8081", router)
