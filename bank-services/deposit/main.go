@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/Hokure04/GoBank/deposit/operations"
-	"github.com/gorilla/mux"
 	"log"
 	"net/http"
 )
@@ -33,7 +32,7 @@ func transferMoney(writer http.ResponseWriter, request *http.Request) {
 }
 
 func main() {
-	router := mux.NewRouter()
+	router := http.NewServeMux()
 
 	router.HandleFunc("GET /transactions", getTransactions)
 	router.HandleFunc("POST /transfer", transferMoney)
