@@ -3,15 +3,19 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/Hokure04/GoBank/deposit/operations"
 	"log"
 	"net/http"
+
+	"github.com/Hokure04/GoBank/deposit/operations"
 )
 
 func getTransactions(writer http.ResponseWriter, request *http.Request) {
 	transactions := operations.GetAllTransactions()
 	writer.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(writer).Encode(transactions)
+	err := json.NewEncoder(writer).Encode(transactions)
+	if err != nil {
+		return
+	}
 }
 
 func transferMoney(writer http.ResponseWriter, request *http.Request) {
@@ -28,7 +32,10 @@ func transferMoney(writer http.ResponseWriter, request *http.Request) {
 		return
 	}
 	writer.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(writer).Encode(newTx)
+	err = json.NewEncoder(writer).Encode(newTx)
+	if err != nil {
+		return
+	}
 }
 
 func main() {
@@ -37,8 +44,8 @@ func main() {
 	router.HandleFunc("GET /transactions", getTransactions)
 	router.HandleFunc("POST /transfer", transferMoney)
 
-	fmt.Println("Listening on port 8081")
-	err := http.ListenAndServe(":8081", router)
+	fmt.Println("Listening on port 8080")
+	err := http.ListenAndServe(":8080", router)
 	if err != nil {
 		log.Fatal(err)
 	}
