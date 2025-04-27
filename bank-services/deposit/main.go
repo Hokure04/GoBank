@@ -1,9 +1,9 @@
 package main
 
 import (
-	"deposit/operations"
 	"encoding/json"
 	"fmt"
+	"github.com/Hokure04/GoBank/deposit/operations"
 	"github.com/gorilla/mux"
 	"log"
 	"net/http"
