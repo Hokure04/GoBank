@@ -8,6 +8,5 @@ services:
     restart: unless-stopped
     ports:
       - 28080:8080
-    volumes:
-      - ./search-service/pkg/config/api/config.yaml:/config.yaml
+
 
