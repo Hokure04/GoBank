@@ -2,6 +2,7 @@ package operations
 
 import "fmt"
 
+// TODO возможно стоит переименовать в банковскую транзакцию
 type Transaction struct {
 	ID          string  `json:"id"`
 	Amount      float64 `json:"amount"`
