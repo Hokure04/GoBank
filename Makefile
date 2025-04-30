@@ -6,18 +6,19 @@ down:
 	${container_runtime} compose down
 clean:
 	${container_runtime} compose down -v
-#run-tests: will be...
-	#${container_runtime} run --rm --network=host tests:latest
-#test:
-#	make clean
-#	make up
-#	@echo wait cluster to start && sleep 2
-#	make run-tests
-#	make clean
-#	@echo "test finished"
+# will be...
+run-tests:
+	${container_runtime} run --rm --network=host tests:latest
+test:
+	make clean
+	make up
+	@echo wait cluster to start && sleep 2
+	make run-tests
+	make clean
+	@echo "test finished"
 tools:
 	make -C bank-services lint
-lint:
+lint: tools
 	make -C bank-services lint
 proto:
 	make -C bank-services protobuf

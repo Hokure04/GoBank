@@ -31,7 +31,7 @@ func GetAllTransactions() []Transaction {
 
 func Transfer(fromAccount, toAccount string, amount float64) (Transaction, error) {
 	if amount <= 0 {
-		return Transaction{}, fmt.Errorf("Amount can't be zero or lower")
+		return Transaction{}, fmt.Errorf("amount can't be zero or lower")
 	}
 	tx := CreateTransaction(fmt.Sprintf("%d", len(Transactions)+1), fromAccount, toAccount, amount, "transfer")
 	return tx, nil

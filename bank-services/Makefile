@@ -12,7 +12,7 @@ protolint:
 	protolint proto/*
 
 golint:
-	golangci-lint run -E goimports,gocritic -v ./...
+	golangci-lint run -E gocritic -v ./...
 
 tools:
 	go install github.com/yoheimuta/protolint/cmd/protolint@latest

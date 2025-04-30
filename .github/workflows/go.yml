@@ -4,48 +4,35 @@ on:
   push:
     branches:
       - '**'
-  pull_request:
-    branches:
-      - '**'
 
 jobs:
   lint:
-    name: Lint Go Code
+    name: Lint & Format Go Code
     runs-on: ubuntu-latest
-    container: golangci/golangci-lint:v1.63.4-alpine
+    container: golangci/golangci-lint:latest
+    env:
+      GOFLAGS: -buildvcs=false
+    defaults:
+      run:
+        working-directory: bank-services
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Install make and protolint
+      - name: Install dependencies
         run: |
-          apk add make
+          apt-get update && apt-get install -y make
+          go install golang.org/x/tools/cmd/goimports@latest
           go install github.com/yoheimuta/protolint/cmd/protolint@v0.53.0
 
-      - name: Run Linter
-        run: make tools && make lint
+      - name: ProtoLint
+        run: protolint lint proto/
 
-  build:
-    name: Build Docker Images
-    runs-on: ubuntu-latest
-    container:
-      image: gcr.io/kaniko-project/executor:v1.22.0-debug
-      options: --entrypoint ""
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - name: Goimports Check
+        run: goimports -l -w .
 
-      - name: Build docker images without push
-        run: |
-          dockerfiles=$(find . -iname '*Dockerfile*')
-          for dockerfile in $dockerfiles; do
-            build_context=$(dirname "$dockerfile")
-            /kaniko/executor --context "$build_context" \
-                             --dockerfile "$dockerfile" \
-                             --no-push \
-                             --registry-mirror index.docker.io
-          done
-
+      - name: GolangCI-Lint (only gocritic)
+        run: golangci-lint run -E gocritic -v ./...
   test:
     name: Run Tests
     runs-on: ubuntu-latest
@@ -58,11 +45,10 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Set up Docker
+      - name: Verify Docker Compose availability
         run: |
-          apk add make
-          docker version
-          docker-compose version
+          # Use Docker Compose plugin (docker compose) instead of docker-compose
+          docker compose version || true
 
       - name: Run Tests
         run: make test

@@ -9,4 +9,9 @@ services:
     ports:
       - 28080:8080
 
-
+  tests:
+    image: tests:latest
+    build: tests
+    container_name: tests
+    restart: 'no'
+    entrypoint: 'true'
