@@ -17,7 +17,7 @@ test:
 	make clean
 	@echo "test finished"
 tools:
-	make -C bank-services lint
+	make -C bank-services tools
 lint: tools
 	make -C bank-services lint
 proto:
