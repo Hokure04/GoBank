@@ -7,7 +7,7 @@ import (
 )
 
 func TestSender_SendRecoverMessage(t *testing.T) {
-	validDieler := gomail.NewDialer("smtp.mail.ru", 465, "go.bank.03@mail.ru", "Vjrm6i0L46zzKntnEEkD")
+	validDieler := gomail.NewDialer("smtp.mail.ru", 465, "mail", "password")
 
 	type fields struct {
 		log    *slog.Logger

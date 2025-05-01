@@ -18,7 +18,7 @@ func main() {
 	message.SetBody("text/plain", "This is the Test Body")
 
 	// Set up the SMTP dialer Vjrm6i0L46zzKntnEEkD
-	dialer := gomail.NewDialer("smtp.mail.ru", 465, "go.bank.03@mail.ru", "password")
+	dialer := gomail.NewDialer("smtp.mail.ru", 465, "go.bank.03@mail.ru", "Vjrm6i0L46zzKntnEEkD")
 
 	//// Send the email
 	if err := dialer.DialAndSend(message); err != nil {
