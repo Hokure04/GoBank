@@ -9,7 +9,7 @@ type AuthorizationVerifier interface {
 }
 
 type SenderRecoverMessage interface {
-	SendRecoverMessage(toUser string, code int) error
+	SendRecoverMessage(toUser string) error
 }
 
 // there must be for generating reports
