@@ -9,10 +9,10 @@ option go_package = "github.com/Hokure04/GoBank/proto/deposit";
 message WordsRequest {
   string phrase = 1;
 }
-
 message WordsReply {
-  repeated string words = 1;
+  string phrase = 1;
 }
+
 
 
 service Words {
