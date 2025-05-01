@@ -6,7 +6,7 @@ protobuf:
                proto/deposit/deposit.proto
 	protoc --go_out=. --go_opt=paths=source_relative \
                --go-grpc_out=. --go-grpc_opt=paths=source_relative \
-               proto/user/user.proto
+               proto/mail/mail.proto
 	protoc --go_out=. --go_opt=paths=source_relative \
                    --go-grpc_out=. --go-grpc_opt=paths=source_relative \
                    proto/auth/auth.proto
