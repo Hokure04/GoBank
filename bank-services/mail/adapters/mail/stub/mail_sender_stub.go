@@ -11,6 +11,7 @@ import (
 	"html/template"
 	"log/slog"
 	"net/mail"
+	"time"
 )
 
 var recoverTemplate *template.Template
@@ -25,10 +26,10 @@ const (
 
 type Sender struct {
 	log    *slog.Logger
-	dialer *gomail.Dialer
+	dialer string
 }
 
-func NewMailSender(log *slog.Logger, dialer *gomail.Dialer, templateFolder string) Sender {
+func NewMailSender(log *slog.Logger, dialer string, templateFolder string) Sender {
 	recoverTemplate = template.Must(
 		template.ParseFiles(
 			fmt.Sprintf("%s/recovermessage.gohtml", templateFolder)))
@@ -55,9 +56,8 @@ func (s Sender) SendRecoverMessage(toUser string, code int) error {
 	}
 
 	message := s.generateMessage(toUser, body.String(), headerResetPassword)
-	if err = s.dialer.DialAndSend(message); err != nil {
-		return err
-	}
+	s.log.Info("Sending to user data...", "message", message)
+	time.Sleep(time.Second * 2)
 
 	return nil
 }
@@ -70,7 +70,7 @@ func validateEmail(email string) bool {
 func (s Sender) generateMessage(email, body, header string) *gomail.Message {
 	message := gomail.NewMessage()
 
-	message.SetHeader("From", s.dialer.Username)
+	message.SetHeader("From", s.dialer)
 	message.SetHeader("To", email)
 	message.SetHeader("Subject", header)
 	message.SetBody("text/html", body)
