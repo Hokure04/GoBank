@@ -40,6 +40,7 @@ func NewMailSender(log *slog.Logger, dialer *gomail.Dialer, templateFolder strin
 
 func (s Sender) SendRecoverMessage(toUser string, code int) error {
 	if !validateEmail(toUser) {
+		s.log.Warn("user email is invalid", "email", toUser)
 		return ErrInvalidUser
 	}
 
@@ -51,11 +52,13 @@ func (s Sender) SendRecoverMessage(toUser string, code int) error {
 		Code: code,
 	})
 	if err != nil {
+		s.log.Error("fail to execute data for template")
 		return err
 	}
 
 	message := s.generateMessage(toUser, body.String(), headerResetPassword)
 	if err = s.dialer.DialAndSend(message); err != nil {
+		s.log.Error("fail to send a message", "reason", err)
 		return err
 	}
 
