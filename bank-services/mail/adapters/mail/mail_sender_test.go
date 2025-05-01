@@ -15,7 +15,7 @@ func TestSender_SendRecoverMessage(t *testing.T) {
 	}
 	type args struct {
 		toUser string
-		code   int
+		code   string
 	}
 	tests := []struct {
 		name    string
@@ -31,7 +31,7 @@ func TestSender_SendRecoverMessage(t *testing.T) {
 			},
 			args: args{
 				toUser: "some@gmail.com",
-				code:   3421,
+				code:   "3421",
 			},
 			wantErr: false,
 		},
@@ -43,7 +43,7 @@ func TestSender_SendRecoverMessage(t *testing.T) {
 			},
 			args: args{
 				toUser: "jaba",
-				code:   21,
+				code:   "21",
 			},
 			wantErr: true,
 		},
