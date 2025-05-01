@@ -38,7 +38,7 @@ func NewMailSender(log *slog.Logger, dialer *gomail.Dialer, templateFolder strin
 	}
 }
 
-func (s Sender) SendRecoverMessage(toUser string, code int) error {
+func (s Sender) SendRecoverMessage(toUser string, pass string) error {
 	if !validateEmail(toUser) {
 		s.log.Warn("user email is invalid", "email", toUser)
 		return ErrInvalidUser
@@ -47,9 +47,9 @@ func (s Sender) SendRecoverMessage(toUser string, code int) error {
 	var body bytes.Buffer
 
 	err := recoverTemplate.Execute(&body, struct {
-		Code int
+		Pass string
 	}{
-		Code: code,
+		Pass: pass,
 	})
 	if err != nil {
 		s.log.Error("fail to execute data for template")

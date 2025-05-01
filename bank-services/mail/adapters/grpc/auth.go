@@ -25,18 +25,18 @@ func NewAuthClient(log *slog.Logger, conn *grpc.ClientConn) Auth {
 	}
 }
 
-func (a Auth) IdentifyUser(ctx context.Context, username string) error {
-	_, err := a.client.IdentifyUser(ctx, &authpb.IdentifyRequest{
-		Username: username,
+func (a Auth) RecoverPassword(ctx context.Context, email string) (string, error) {
+	pass, err := a.client.RecoverPassword(ctx, &authpb.RecoverPass{
+		Email: email,
 	})
 
 	if err != nil {
 		if status.Code(err) == codes.NotFound {
-			return core.ErrUserNotExist
+			return "", core.ErrUserNotExist
 		}
-		return err
+		return "", err
 	}
-	return nil
+	return pass.GetPassword(), nil
 }
 
 func (a Auth) Close() error {

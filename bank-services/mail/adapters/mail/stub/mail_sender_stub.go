@@ -39,7 +39,7 @@ func NewMailSender(log *slog.Logger, dialer string, templateFolder string) Sende
 	}
 }
 
-func (s Sender) SendRecoverMessage(toUser string, code int) error {
+func (s Sender) SendRecoverMessage(toUser string, pass string) error {
 	if !validateEmail(toUser) {
 		return ErrInvalidUser
 	}
@@ -47,9 +47,9 @@ func (s Sender) SendRecoverMessage(toUser string, code int) error {
 	var body bytes.Buffer
 
 	err := recoverTemplate.Execute(&body, struct {
-		Code int
+		Pass string
 	}{
-		Code: code,
+		Pass: pass,
 	})
 	if err != nil {
 		return err

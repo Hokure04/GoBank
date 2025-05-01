@@ -33,7 +33,6 @@ service Auth {
   // return temporary password, user can use this password or change it
   // return grpc: NOT_FOUND if user not found in the system
   // https://grpc.io/docs/guides/status-codes/
-
   rpc RecoverPassword(RecoverPass) returns (TemporaryPassword) {}
 }
 

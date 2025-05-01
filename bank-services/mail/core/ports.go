@@ -13,15 +13,16 @@ type GrpcClient interface {
 
 type AuthorizationVerifier interface {
 	GrpcClient
-	// IdentifyUser going for Authorization service and request
-	// identify user with username
+	// RecoverPassword going for Authorization service and request a temporary password for user
+	// identify user with such email
+	// return temporary password, which was already set in database
 	// return ErrUserNotExist if user not exist
 	// return ErrUserWasBanned if user was banned
-	IdentifyUser(ctx context.Context, username string) error
+	RecoverPassword(ctx context.Context, username string) (string, error)
 }
 
 type SenderRecoverMessage interface {
-	SendRecoverMessage(toUser string, code int) error
+	SendRecoverMessage(toUser string, tmpPass string) error
 }
 
 type Sender interface {
