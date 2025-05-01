@@ -1,7 +1,7 @@
 // mail service for processing real work with mails
 // if you work in dev mode use mail_sender_stub.go -> it does the same thing, but without sending mails
 
-package mail
+package stub
 
 import (
 	"bytes"
@@ -30,9 +30,8 @@ type Sender struct {
 }
 
 func NewStubMailSender(log *slog.Logger, dialer string, templateFolder string) Sender {
-	recoverTemplate = template.Must(
-		template.ParseFiles(
-			fmt.Sprintf("%s/recovermessage.gohtml", templateFolder)))
+	path := fmt.Sprintf("%s/recovermessage.gohtml", templateFolder)
+	recoverTemplate = template.Must(template.ParseFiles(path))
 	return Sender{
 		log:    log,
 		dialer: dialer,

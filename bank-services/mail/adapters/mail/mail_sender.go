@@ -29,9 +29,8 @@ type Sender struct {
 }
 
 func NewMailSender(log *slog.Logger, dialer *gomail.Dialer, templateFolder string) Sender {
-	recoverTemplate = template.Must(
-		template.ParseFiles(
-			fmt.Sprintf("%s/recovermessage.gohtml", templateFolder)))
+	path := fmt.Sprintf("%s/recovermessage.gohtml", templateFolder)
+	recoverTemplate = template.Must(template.ParseFiles(path))
 	return Sender{
 		log:    log,
 		dialer: dialer,
