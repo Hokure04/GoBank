@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+package mail;
+
+import "google/protobuf/empty.proto";
+
+option go_package = "github.com/Hokure04/GoBank/proto/mail";
+
+message RecoverPass {
+  string email = 1;
+}
+
+
+service Mail {
+  rpc Ping(google.protobuf.Empty) returns (google.protobuf.Empty) {}
+
+  // NOTE: return equalities codes as auth proto
+  // return temporary password, user can use this password or change it
+  // return grpc: NOT_FOUND if user not found in the system
+  // https://grpc.io/docs/guides/status-codes/
+  rpc RequestRecoverPassword(RecoverPass) returns (google.protobuf.Empty) {}
+}
+

@@ -1,0 +1,17 @@
+services:
+  deposit:
+    image: deposit:latest
+    build:
+      context: bank-services
+      dockerfile: Dockerfile.deposit
+    container_name: deposit
+    restart: unless-stopped
+    ports:
+      - 28080:8080
+
+  tests:
+    image: tests:latest
+    build: tests
+    container_name: tests
+    restart: 'no'
+    entrypoint: 'true'
