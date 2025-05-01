@@ -1,20 +1,39 @@
 syntax = "proto3";
 
-package deposit;
+package auth;
 
 import "google/protobuf/empty.proto";
 
 option go_package = "github.com/Hokure04/GoBank/proto/auth";
 
-message IdentifyRequest {
-  string username = 1;
+message RecoverPass {
+  string email = 1;
 }
 
+message TemporaryPassword {
+  string password = 1;
+}
 
+message RegisterUserRequest {
+  string full_name = 1;
+  string email = 2;
+  string password = 3;
+}
+
+message RegisterUserResponse {
+  string user_id = 1;
+  string message = 2;
+}
 
 service Auth {
   rpc Ping(google.protobuf.Empty) returns (google.protobuf.Empty) {}
-  // return NOT_FOUND if user not found in the system
+  rpc RegisterUser (RegisterUserRequest) returns (RegisterUserResponse);
+
+
+  // return temporary password, user can use this password or change it
+  // return grpc: NOT_FOUND if user not found in the system
   // https://grpc.io/docs/guides/status-codes/
-  rpc IdentifyUser(IdentifyRequest) returns (google.protobuf.Empty) {}
+
+  rpc RecoverPassword(RecoverPass) returns (TemporaryPassword) {}
 }
+

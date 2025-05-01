@@ -21,7 +21,11 @@ type AuthorizationVerifier interface {
 }
 
 type SenderRecoverMessage interface {
-	SendRecoverMessage(toUser string) error
+	SendRecoverMessage(toUser string, code int) error
+}
+
+type Sender interface {
+	SenderRecoverMessage
 }
 
 // there must be for generating reports
