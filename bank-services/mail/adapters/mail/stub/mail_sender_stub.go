@@ -29,7 +29,7 @@ type Sender struct {
 	dialer string
 }
 
-func NewMailSender(log *slog.Logger, dialer string, templateFolder string) Sender {
+func NewStubMailSender(log *slog.Logger, dialer string, templateFolder string) Sender {
 	recoverTemplate = template.Must(
 		template.ParseFiles(
 			fmt.Sprintf("%s/recovermessage.gohtml", templateFolder)))
